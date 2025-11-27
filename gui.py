@@ -90,10 +90,8 @@ class DataProcessingGUI:
             try:
                 if file_path.endswith('.xlsx'):
                     utils.export_data(self.data, file_path, file_type='xlsx')
-                    messagebox.showinfo("Success", f"Data exported successfully to {file_path}")
                 elif file_path.endswith('.csv'):
                     utils.export_data(self.data, file_path, file_type='csv')
-                    messagebox.showinfo("Success", f"Data exported successfully to {file_path}")
                 else:
                     messagebox.showerror("Invalid Format", "Please save as . csv or .xlsx only.")
             except Exception as e:
@@ -176,11 +174,11 @@ class DataProcessingGUI:
         self.ax_left = self.fig.add_subplot(121)
         self.ax_right = self.fig.add_subplot(122)
         
+        self.fig.subplots_adjust(top=0.9, bottom=0.15)
+
         self.canvas = FigureCanvasTkAgg(self.fig, master=self.graph_frame)
         self.canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
-        
-        self.ax_left.set_title("Left Graph")
-        self.ax_right.set_title("Right Graph")
+
         self.canvas.draw()
 
     def update_plots(self):
@@ -316,10 +314,8 @@ class DataProcessingGUI:
         self.window.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
     def create_stats_display(self):
-        tk.Label(self.bottom_frame, text="Left Graph Statistics:", bg="lightgray", font=("Arial", 10, "bold")).place(relx=0.25, y=5, anchor="center")
-        
         self.left_stats_frame = tk.Frame(self.bottom_frame, bg="lightgray")
-        self.left_stats_frame.place(relx=0.25, y=30, anchor="n")
+        self.left_stats_frame.place(relx=0.32, y=2, anchor="n")
         
         self.left_stats_labels = {}
         stats_keys = ['Count', 'Mean', 'Median', 'Mode', 'Std', 'Min', 'Max', 'Range']
@@ -330,15 +326,13 @@ class DataProcessingGUI:
             label.grid(row=row, column=col, padx=5, pady=2)
             self.left_stats_labels[key] = label
         
-        tk.Label(self.bottom_frame, text="Right Graph Statistics:", bg="lightgray", font=("Arial", 10, "bold")).place(relx=0.75, y=5, anchor="center")
-        
         self.right_stats_frame = tk.Frame(self.bottom_frame, bg="lightgray")
-        self.right_stats_frame.place(relx=0.75, y=30, anchor="n")
+        self.right_stats_frame.place(relx=0.74, y=2, anchor="n")
         
         self.right_stats_labels = {}
         for i, key in enumerate(stats_keys):
             row = i // 3
             col = i % 3
-            label = tk.Label(self.right_stats_frame, text=f"{key}: N/A", bg="lightgray", font=("Arial", 9), width=15, anchor="w")
+            label = tk. Label(self.right_stats_frame, text=f"{key}: N/A", bg="lightgray", font=("Arial", 9), width=15, anchor="w")
             label.grid(row=row, column=col, padx=5, pady=2)
             self.right_stats_labels[key] = label
