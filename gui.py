@@ -51,7 +51,7 @@ class DataProcessingGUI:
         A tool for visualizing and transforming data.
 
         Created by Daniel Stefanian
-        github.com/Dn-Stef"""
+        github.com/dn-stef"""
         
         label = tk.Label(about_window, text=about_text, padx=20, pady=20, justify="left")
         label.pack()
@@ -76,15 +76,36 @@ class DataProcessingGUI:
             except Exception as e:
                 print(f"Error loading file: {e}")
     def export_data(self):
-        pass # Placeholder for export data functionality
+        if self.data is None:
+            messagebox.showwarning("No Data", "No data to export.  Please load data first.")
+            return
+        
+        file_path = filedialog.asksaveasfilename(
+            title="Export Data",
+            defaultextension=".csv",
+            filetypes=[("CSV files", "*.csv"), ("Excel files", "*.xlsx")]
+        )
+        
+        if file_path:
+            try:
+                if file_path.endswith('.xlsx'):
+                    utils.export_data(self.data, file_path, file_type='xlsx')
+                    messagebox.showinfo("Success", f"Data exported successfully to {file_path}")
+                elif file_path.endswith('.csv'):
+                    utils.export_data(self.data, file_path, file_type='csv')
+                    messagebox.showinfo("Success", f"Data exported successfully to {file_path}")
+                else:
+                    messagebox.showerror("Invalid Format", "Please save as . csv or .xlsx only.")
+            except Exception as e:
+                messagebox.showerror("Export Error", f"Failed to export data: {str(e)}")
     
     def create_controls(self):
         tk.Label(self.top_frame, text="Transform Column:", bg="lightgray").grid(row=0, column=0, padx=10, pady=5, sticky="e")
         self.transform_column_var = tk.StringVar()
         self.transform_column_dropdown = tk.OptionMenu(self.top_frame, self.transform_column_var, "")
+        self.transform_column_dropdown.config(width=15)
         self.transform_column_dropdown.grid(row=0, column=1, padx=5, pady=5, sticky="w")
         
-        # Column 2-5: Transformation buttons (2 rows, 3 buttons each, right of dropdown)
         tk.Label(self.top_frame, text="Apply Transformation:", bg="lightgray", font=("Arial", 9, "bold")).grid(row=0, column=2, columnspan=3, pady=5, sticky="w", padx=20)
         
         tk.Button(self.top_frame, text="Standardize", command=lambda: self.apply_transform("standardize"), width=10).grid(row=1, column=2, padx=3, pady=2)
@@ -95,8 +116,6 @@ class DataProcessingGUI:
         tk.Button(self.top_frame, text="Inverse", command=lambda: self.apply_transform("inverse"), width=10).grid(row=2, column=3, padx=3, pady=2)
         tk.Button(self.top_frame, text="Exp", command=lambda: self.apply_transform("exp"), width=10).grid(row=2, column=4, padx=3, pady=2)
         
-        # Column 6-9: Graph controls (pushed further right)
-        # Left Graph
         tk.Label(self.top_frame, text="Left Graph:", bg="lightgray", font=("Arial", 9, "bold")).grid(row=0, column=6, padx=15, sticky="w")
         tk.Label(self.top_frame, text="X:", bg="lightgray").grid(row=1, column=6, padx=(15,2), sticky="e")
         self.left_x_var = tk.StringVar()
@@ -110,7 +129,6 @@ class DataProcessingGUI:
         self.left_y_dropdown.config(width=10)
         self.left_y_dropdown.grid(row=2, column=7, padx=2)
         
-        # Right Graph
         tk.Label(self.top_frame, text="Right Graph:", bg="lightgray", font=("Arial", 9, "bold")).grid(row=0, column=8, padx=15, sticky="w")
         tk.Label(self.top_frame, text="X:", bg="lightgray").grid(row=1, column=8, padx=(15,2), sticky="e")
         self.right_x_var = tk.StringVar()
@@ -196,17 +214,25 @@ class DataProcessingGUI:
 
         if left_y != "Index":
             left_stats = utils.get_statistics(y_data_left)
-            stats_text = "\n".join([f"{key}: {value:.4f}" for key, value in left_stats.items()])
-            self.left_stats_label.config(text=stats_text)
+            for key, value in left_stats.items():
+                if isinstance(value, (int, float)):
+                    self.left_stats_labels[key].config(text=f"{key}: {value:.3f}")
+                else:
+                    self.left_stats_labels[key].config(text=f"{key}: {value}")
         else:
-            self.left_stats_label.config(text="Cannot calculate stats for Index")
+            for key in self.left_stats_labels:
+                self.left_stats_labels[key].config(text=f"{key}: N/A")
 
         if right_y != "Index":
-            right_stats = utils.get_statistics(y_data_right)
-            stats_text = "\n".join([f"{key}: {value:.4f}" for key, value in right_stats.items()])
-            self.right_stats_label.config(text=stats_text)
+            right_stats = utils. get_statistics(y_data_right)
+            for key, value in right_stats.items():
+                if isinstance(value, (int, float)):
+                    self.right_stats_labels[key].config(text=f"{key}: {value:.3f}")
+                else:
+                    self.right_stats_labels[key].config(text=f"{key}: {value}")
         else:
-            self.right_stats_label.config(text="Cannot calculate stats for Index")
+            for key in self. right_stats_labels:
+                self.right_stats_labels[key].config(text=f"{key}: N/A")
 
     def update_graph_dropdowns_only(self):
         columns = ["Index"] + list(self.data.columns)
@@ -290,10 +316,29 @@ class DataProcessingGUI:
         self.window.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
     def create_stats_display(self):
-        tk.Label(self.bottom_frame, text="Left Graph Statistics:", bg="lightgray", font=("Arial", 10, "bold")).grid(row=0, column=0, padx=20, pady=5, sticky="w")
-        self.left_stats_label = tk.Label(self.bottom_frame, text="No data", bg="lightgray", justify="left", font=("Arial", 9))
-        self.left_stats_label.grid(row=1, column=0, padx=20, pady=5, sticky="nw")
+        tk.Label(self.bottom_frame, text="Left Graph Statistics:", bg="lightgray", font=("Arial", 10, "bold")).place(relx=0.25, y=5, anchor="center")
         
-        tk.Label(self.bottom_frame, text="Right Graph Statistics:", bg="lightgray", font=("Arial", 10, "bold")).grid(row=0, column=1, padx=20, pady=5, sticky="w")
-        self.right_stats_label = tk.Label(self.bottom_frame, text="No data", bg="lightgray", justify="left", font=("Arial", 9))
-        self.right_stats_label.grid(row=1, column=1, padx=20, pady=5, sticky="nw")
+        self.left_stats_frame = tk.Frame(self.bottom_frame, bg="lightgray")
+        self.left_stats_frame.place(relx=0.25, y=30, anchor="n")
+        
+        self.left_stats_labels = {}
+        stats_keys = ['Count', 'Mean', 'Median', 'Mode', 'Std', 'Min', 'Max', 'Range']
+        for i, key in enumerate(stats_keys):
+            row = i // 3
+            col = i % 3
+            label = tk.Label(self.left_stats_frame, text=f"{key}: N/A", bg="lightgray", font=("Arial", 9), width=15, anchor="w")
+            label.grid(row=row, column=col, padx=5, pady=2)
+            self.left_stats_labels[key] = label
+        
+        tk.Label(self.bottom_frame, text="Right Graph Statistics:", bg="lightgray", font=("Arial", 10, "bold")).place(relx=0.75, y=5, anchor="center")
+        
+        self.right_stats_frame = tk.Frame(self.bottom_frame, bg="lightgray")
+        self.right_stats_frame.place(relx=0.75, y=30, anchor="n")
+        
+        self.right_stats_labels = {}
+        for i, key in enumerate(stats_keys):
+            row = i // 3
+            col = i % 3
+            label = tk.Label(self.right_stats_frame, text=f"{key}: N/A", bg="lightgray", font=("Arial", 9), width=15, anchor="w")
+            label.grid(row=row, column=col, padx=5, pady=2)
+            self.right_stats_labels[key] = label
