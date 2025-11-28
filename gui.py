@@ -9,8 +9,6 @@ class DataProcessingGUI:
     def __init__(self):
         self.window = tk.Tk()
         self.window.title("Data Preprocessing Tool")
-        self.window.geometry("1200x700")
-        self.center_window()
         self.window.resizable(False, False)
 
         menubar = tk.Menu(self.window)
@@ -33,12 +31,14 @@ class DataProcessingGUI:
         self.top_frame.pack(side=tk.TOP, fill=tk.X)
         self.graph_frame = tk.Frame(self.window, bg="white")
         self.graph_frame.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
-        self.bottom_frame = tk.Frame(self.window, height=150, bg="lightgray")
+        self.bottom_frame = tk.Frame(self.window, height=250, bg="lightgray")
         self.bottom_frame.pack(side=tk.BOTTOM, fill=tk.X)
 
         self.create_controls()
         self.create_graphs()
         self.create_stats_display()
+        self.center_window()
+
 
     def show_about(self):
         about_window = tk.Toplevel(self.window)
@@ -174,7 +174,7 @@ class DataProcessingGUI:
         self.ax_left = self.fig.add_subplot(121)
         self.ax_right = self.fig.add_subplot(122)
         
-        self.fig.subplots_adjust(top=0.9, bottom=0.15)
+        self.fig.subplots_adjust(right=0.95, left=0.09, top=0.92, bottom=0.15, wspace=0.3)
 
         self.canvas = FigureCanvasTkAgg(self.fig, master=self.graph_frame)
         self.canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
@@ -199,14 +199,12 @@ class DataProcessingGUI:
         self.ax_left.plot(x_data_left, y_data_left)
         self.ax_left.set_xlabel(left_x)
         self.ax_left.set_ylabel(left_y)
-        self.ax_left.set_title("Left Graph")
         
         x_data_right = self.data.index if right_x == "Index" else self.data[right_x]
         y_data_right = self.data.index if right_y == "Index" else self.data[right_y]
         self.ax_right.plot(x_data_right, y_data_right)
         self.ax_right.set_xlabel(right_x)
         self.ax_right.set_ylabel(right_y)
-        self.ax_right.set_title("Right Graph")
         
         self.canvas.draw()
 
@@ -302,20 +300,20 @@ class DataProcessingGUI:
         self.window.update_idletasks()
         
         window_width = 1200
-        window_height = 700
+        window_height = 850
         
         screen_width = self.window.winfo_screenwidth()
         screen_height = self.window.winfo_screenheight()
         
         x = (screen_width - window_width) // 2
-        y = (screen_height - window_height) // 2
+        y = (screen_height - window_height) // 2 - 50
         
         
         self.window.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
     def create_stats_display(self):
         self.left_stats_frame = tk.Frame(self.bottom_frame, bg="lightgray")
-        self.left_stats_frame.place(relx=0.32, y=2, anchor="n")
+        self.left_stats_frame.place(relx=0.3, y=2, anchor="n")
         
         self.left_stats_labels = {}
         stats_keys = ['Count', 'Mean', 'Median', 'Mode', 'Std', 'Min', 'Max', 'Range']
@@ -327,7 +325,7 @@ class DataProcessingGUI:
             self.left_stats_labels[key] = label
         
         self.right_stats_frame = tk.Frame(self.bottom_frame, bg="lightgray")
-        self.right_stats_frame.place(relx=0.74, y=2, anchor="n")
+        self.right_stats_frame.place(relx=0.787, y=2, anchor="n")
         
         self.right_stats_labels = {}
         for i, key in enumerate(stats_keys):
