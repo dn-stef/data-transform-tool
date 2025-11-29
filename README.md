@@ -144,7 +144,7 @@ data-transform-tool/
 - **sample-data/** - Contains example CSV/Excel files for testing the tool
 - **screenshots/** - Images of the GUI for documentation
 
-## Requirements
+## Requirements 🎨
 
 - **Python 3.7+**
 - **pandas** - Data manipulation and CSV/Excel handling
