@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 
 def min_max_scale(dataset):
     min_val = dataset.min()
