@@ -15,13 +15,13 @@ A simple Python-based GUI application for data preprocessing and visualization. 
 10. [About the Author](#about-the-author)
 
 ---
-
+<a name="overview"></a>
 ## Overview 📔
 
 This tool is designed for quick data exploration and preprocessing. Load a CSV or Excel file, select columns to visualize on dual graphs, and apply transformations to see how they affect your data distribution.  Statistics are calculated and displayed automatically for both graphs.
 
 Built with Tkinter for the GUI and matplotlib for visualization.  The interface is straightforward - no complicated menus or settings, just load your data and start transforming. 
-
+<a name="features"></a>
 ## Features 🎳
 
 - **Dual Graph Visualization** - Compare original and transformed data side-by-side
@@ -30,7 +30,7 @@ Built with Tkinter for the GUI and matplotlib for visualization.  The interface 
 - **Import/Export** - Support for both CSV and Excel formats
 - **DPI-Aware Rendering** - Sharp text and graphics on high-resolution displays
 - **Column Selection** - Choose any numeric columns for X and Y axes independently
-
+<a name="installation"></a>
 ## Installation 💻
 
 1. Clone the repository:
@@ -51,7 +51,7 @@ python main.py
 
 4. Try it with sample data:
    - Load any file from the `sample-data/` folder to test the features
-
+<a name="usage"></a>
 ## Usage 🍴
 
 1. **Import Data**
@@ -74,7 +74,7 @@ python main.py
    - Click `File → Export Data`
    - Choose CSV or Excel format
    - Exported file includes the original data along with all applied transformations
-
+<a name="transformations"></a>
 ## Transformations ⭐
 
 The tool supports 6 mathematical transformations:
@@ -106,7 +106,7 @@ Formula: `1 / x`
 ### **Exponential**
 Applies exponential function.  
 Formula: `e^x`
-
+<a name="statistics"></a>
 ## Statistics 📈
 
 Each graph displays 8 statistics in a 3x3 grid below the graphs:
@@ -121,7 +121,7 @@ Each graph displays 8 statistics in a 3x3 grid below the graphs:
 - **Range** - Difference between max and min
 
 Statistics update automatically when columns change or transformations are applied.
-
+<a name="project-structure"></a>
 ## Project Structure 🗼
 
 ```
@@ -143,7 +143,7 @@ data-transform-tool/
 - **transformations. py** - Implements all 6 transformation functions with error handling
 - **sample-data/** - Contains example CSV/Excel files for testing the tool
 - **screenshots/** - Images of the GUI for documentation
-
+<a name="requirements"></a>
 ## Requirements 🎨
 
 - **Python 3.7+**
@@ -157,7 +157,7 @@ Install all dependencies with:
 ```bash
 pip install pandas numpy matplotlib openpyxl
 ```
-
+<a name="screenshots"></a>
 ## Screenshots 📸
 
 ### Main Window
@@ -165,7 +165,7 @@ pip install pandas numpy matplotlib openpyxl
 
 ### Data Visualization with Transformation
 ![Transformations](screenshots/transformation.jpg)
-
+<a name="about-the-author"></a>
 ## About the Author 🃏
 
 I'm a physics graduate with a focus on data analysis and Python programming. This project was built to expand my skills in GUI development and data preprocessing while creating something practical and applicable to real-world workflows. 
