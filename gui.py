@@ -4,6 +4,17 @@ import utils
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import transformations
+import platform
+import ctypes
+
+if platform.system() == "Windows":
+    try:
+        ctypes.windll.shcore.SetProcessDpiAwareness(1)
+    except Exception:
+        try:
+            ctypes.windll.user32.SetProcessDPIAware()
+        except Exception:
+            pass
 
 class DataProcessingGUI:
     def __init__(self):
@@ -58,7 +69,7 @@ class DataProcessingGUI:
         
         about_window.update()
         about_window.geometry(f"280x{label.winfo_reqheight() + 20}")
-
+    
     def run(self):
         self.window.mainloop()
     
@@ -300,7 +311,7 @@ class DataProcessingGUI:
         self.window.update_idletasks()
         
         window_width = 1200
-        window_height = 850
+        window_height = 700
         
         screen_width = self.window.winfo_screenwidth()
         screen_height = self.window.winfo_screenheight()
