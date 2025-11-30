@@ -121,6 +121,8 @@ Each graph displays 8 statistics in a 3x3 grid below the graphs:
 - **Range** - Difference between max and min
 
 Statistics update automatically when columns change or transformations are applied.
+
+*Note: If the statistics panel below the graphs is not visible on your machine, try resizing the application window (drag the edges or maximize).*
 <a name="project-structure"></a>
 ## Project Structure 🗼
 
