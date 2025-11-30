@@ -7,20 +7,12 @@ import transformations
 import platform
 import ctypes
 
-if platform.system() == "Windows":
-    try:
-        ctypes.windll.shcore.SetProcessDpiAwareness(1)
-    except Exception:
-        try:
-            ctypes.windll.user32.SetProcessDPIAware()
-        except Exception:
-            pass
-
 class DataProcessingGUI:
     def __init__(self):
         self.window = tk.Tk()
+        self.window.minsize(1200, 700)
         self.window.title("Data Preprocessing Tool")
-        self.window.resizable(False, False)
+        self.window.resizable(True, True)
 
         menubar = tk.Menu(self.window)
         self.window.config(menu=menubar)
